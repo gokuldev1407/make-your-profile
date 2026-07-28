@@ -17,12 +17,6 @@ type ContactSlice  = { email: string; phone: string; location: string; socialLin
 type EducationSlice    = { education: PortfolioData['education']; certifications: PortfolioData['certifications'] };
 type ProfessionalSlice = { skills: PortfolioData['skills']; experience: PortfolioData['experience'] };
 type ProjectsSlice     = { projects: PortfolioData['projects'] };
-type TabPanels = {
-  about?: React.ReactNode;
-  skills?: React.ReactNode;
-  projects?: React.ReactNode; // Add this if missing
-  // ...other properties
-};
 
 // ─── Validators ───────────────────────────────────────────────────────────────
 function validatePersonal(v: PersonalSlice) {
@@ -372,12 +366,13 @@ const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
 ];
 
 // JSON tab config (kept separate for JSON mode)
-type JsonTabId = 'personal' | 'contact' | 'education' | 'professional';
+type JsonTabId = 'personal' | 'contact' | 'education' | 'professional' | 'projects';
 const JSON_TABS: { id: JsonTabId; label: string; icon: React.ElementType; desc: string }[] = [
   { id: 'personal',     label: 'Personal Info', icon: User,          desc: 'name, title, bio' },
   { id: 'contact',      label: 'Contact Info',  icon: Phone,         desc: 'email, phone, location, socialLinks' },
   { id: 'education',    label: 'Education',     icon: GraduationCap, desc: 'education[], certifications[]' },
-  { id: 'professional', label: 'Professional',  icon: Briefcase,     desc: 'skills[], experience[], projects[]' },
+  { id: 'professional', label: 'Professional',  icon: Briefcase,     desc: 'skills[], experience[]' },
+  { id: 'projects',     label: 'Projects',      icon: FormInput,     desc: 'projects[]' },
 ];
 
 // ─── Main Component ───────────────────────────────────────────────────────────
