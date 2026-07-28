@@ -17,6 +17,12 @@ type ContactSlice  = { email: string; phone: string; location: string; socialLin
 type EducationSlice    = { education: PortfolioData['education']; certifications: PortfolioData['certifications'] };
 type ProfessionalSlice = { skills: PortfolioData['skills']; experience: PortfolioData['experience'] };
 type ProjectsSlice     = { projects: PortfolioData['projects'] };
+type TabPanels = {
+  about?: React.ReactNode;
+  skills?: React.ReactNode;
+  projects?: React.ReactNode; // Add this if missing
+  // ...other properties
+};
 
 // ─── Validators ───────────────────────────────────────────────────────────────
 function validatePersonal(v: PersonalSlice) {
