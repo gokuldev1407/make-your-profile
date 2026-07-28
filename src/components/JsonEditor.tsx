@@ -349,7 +349,7 @@ const EducationForm: React.FC<{ isDark: boolean; data: PortfolioData; updateData
             {(['institution','degree','field','location','startDate','endDate','gpa'] as const).map(f => (
               <div key={f} className="mb-2">
                 <label className={labelClass(isDark)}>{f}</label>
-                <input type="text" className={inputClass(isDark)} value={(e as Record<string, string>)[f] ?? ''} onChange={ev => update(i, f, ev.target.value)}/>
+                <input type="text" className={inputClass(isDark)} value={(e as unknown as Record<string, string>)[f] ?? ''} onChange={ev => update(i, f, ev.target.value)}/>
               </div>
             ))}
           </div>
