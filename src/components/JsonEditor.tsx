@@ -103,27 +103,27 @@ const JsonPanel: React.FC<JsonPanelProps> = ({ isDark, initialJson, validate, on
       <div className="flex items-center justify-between mb-3">
         <span className={`text-xs font-mono ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>Edit JSON, then click Apply</span>
         <div className="flex items-center gap-2">
-          {applied && <span className="flex items-center gap-1 text-xs text-emerald-400 font-semibold"><CheckCircle2 size={13}/>Applied!</span>}
-          {hasError && !applied && <span className="flex items-center gap-1 text-xs text-red-400 font-semibold"><AlertCircle size={13}/>Fix errors</span>}
+          {applied && <span className={`flex items-center gap-1 text-xs font-semibold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}><CheckCircle2 size={13}/>Applied!</span>}
+          {hasError && !applied && <span className={`flex items-center gap-1 text-xs font-semibold ${isDark ? 'text-red-400' : 'text-red-600'}`}><AlertCircle size={13}/>Fix errors</span>}
           <button onClick={handleApply} className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5 transition-all duration-200">
             <ClipboardCheck size={14}/>Validate &amp; Apply
           </button>
         </div>
       </div>
       {parseErr && (
-        <div className="mb-3 px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono">
+        <div className={`mb-3 px-3 py-2 rounded-xl border text-xs font-mono ${isDark ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-red-50 border-red-200 text-red-600'}`}>
           <p className="font-bold mb-1">⚠ JSON Syntax Error</p><p>{parseErr}</p>
         </div>
       )}
       {valErrs.length > 0 && (
-        <div className="mb-3 px-3 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs">
+        <div className={`mb-3 px-3 py-2.5 rounded-xl border text-xs ${isDark ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
           <p className="font-bold mb-1.5">⚠ Missing or invalid fields:</p>
-          <ul className="space-y-0.5">{valErrs.map((e, i) => <li key={i} className="flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-amber-400 flex-shrink-0"/>{e}</li>)}</ul>
-          <p className="mt-2 text-amber-500/70">Fix the above and click <span className="font-semibold">Validate &amp; Apply</span> again.</p>
+          <ul className="space-y-0.5">{valErrs.map((e, i) => <li key={i} className="flex items-center gap-1.5"><span className={`w-1 h-1 rounded-full flex-shrink-0 ${isDark ? 'bg-amber-400' : 'bg-amber-500'}`}/>{e}</li>)}</ul>
+          <p className={`mt-2 ${isDark ? 'text-amber-500/70' : 'text-amber-700/80'}`}>Fix the above and click <span className="font-semibold">Validate &amp; Apply</span> again.</p>
         </div>
       )}
       <textarea
-        className={`flex-1 w-full min-h-[520px] font-mono text-xs p-4 rounded-xl border resize-none focus:outline-none focus:ring-2 transition-colors ${hasError ? 'border-red-500/50 focus:ring-red-500/40' : 'focus:ring-indigo-500'} ${isDark ? 'bg-slate-800 border-slate-700 text-emerald-300' : 'bg-slate-900 border-slate-300 text-emerald-400'}`}
+        className={`flex-1 w-full min-h-[520px] font-mono text-xs p-4 rounded-xl border resize-none focus:outline-none focus:ring-2 transition-colors ${hasError ? 'border-red-500/50 focus:ring-red-500/40' : 'focus:ring-indigo-500'} ${isDark ? 'bg-slate-800 border-slate-700 text-emerald-300' : 'bg-white/80 backdrop-blur-md border-white/60 text-slate-800 focus:bg-white'}`}
         value={text}
         onChange={e => { setText(e.target.value); setParseErr(null); setValErrs([]); setApplied(false); }}
         spellCheck={false}
@@ -134,11 +134,11 @@ const JsonPanel: React.FC<JsonPanelProps> = ({ isDark, initialJson, validate, on
 
 // ─── Shared styles helper ─────────────────────────────────────────────────────
 const inputClass = (isDark: boolean) =>
-  `w-full px-3 py-2 rounded-lg border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDark ? 'bg-slate-800 border-slate-600 text-slate-100 placeholder-slate-500' : 'bg-white border-slate-300 text-slate-900 placeholder-slate-400'}`;
+  `w-full px-3 py-2 rounded-lg border text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isDark ? 'bg-slate-800 border-slate-600 text-slate-100 placeholder-slate-500' : 'bg-white/80 border-white/60 text-slate-900 placeholder-slate-400 focus:bg-white'}`;
 const labelClass = (isDark: boolean) =>
   `block text-xs font-semibold uppercase tracking-wide mb-1.5 ${isDark ? 'text-slate-400' : 'text-slate-500'}`;
 const cardClass = (isDark: boolean) =>
-  `rounded-xl border p-4 mb-3 ${isDark ? 'bg-slate-800/50 border-slate-700' : 'bg-white border-slate-200'}`;
+  `rounded-xl border p-4 mb-3 ${isDark ? 'bg-slate-800/50 border-slate-700' : 'bg-white/70 backdrop-blur-md border-white/60 shadow-sm'}`;
 
 // ─── Section toggle wrapper ───────────────────────────────────────────────────
 const Section: React.FC<{ title: string; isDark: boolean; children: React.ReactNode }> = ({ title, isDark, children }) => {
@@ -420,7 +420,7 @@ const JsonEditor: React.FC = () => {
     : (id: string) => setJsonTab(id as JsonTabId);
 
   return (
-    <div className={`min-h-screen pt-20 ${isDark ? 'bg-slate-900' : 'bg-slate-50'}`}>
+    <div className={`min-h-screen pt-20 ${isDark ? 'bg-slate-900' : 'bg-[linear-gradient(to_right,#9df5f9,#c7dcff,#e4d4ff,#ffccf0)]'}`}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         {/* Header */}
@@ -433,7 +433,7 @@ const JsonEditor: React.FC = () => {
           </div>
 
           {/* Form / JSON toggle */}
-          <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
+          <div className={`flex items-center gap-1 p-1 rounded-xl border ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white/60 backdrop-blur-md border-white/60 shadow-sm'}`}>
             <button
               onClick={() => setEditorMode('form')}
               className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${editorMode === 'form' ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/20' : isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'}`}
@@ -450,7 +450,7 @@ const JsonEditor: React.FC = () => {
         </div>
 
         {/* Section tabs */}
-        <div className={`flex flex-wrap gap-2 mb-5 p-1.5 rounded-2xl border ${isDark ? 'bg-slate-800/60 border-slate-700' : 'bg-white border-slate-200'}`}>
+        <div className={`flex flex-wrap gap-2 mb-5 p-1.5 rounded-2xl border ${isDark ? 'bg-slate-800/60 border-slate-700' : 'bg-white/60 backdrop-blur-md border-white/60 shadow-sm'}`}>
           {tabs.map(tab => {
             const Icon = tab.icon;
             const isActive = activeId === tab.id;
@@ -469,7 +469,7 @@ const JsonEditor: React.FC = () => {
 
         {/* JSON mode: field hint */}
         {editorMode === 'json' && (
-          <div className={`mb-4 px-3 py-2 rounded-xl text-xs font-mono border ${isDark ? 'bg-slate-800/40 border-slate-700 text-slate-400' : 'bg-slate-50 border-slate-200 text-slate-500'}`}>
+          <div className={`mb-4 px-3 py-2 rounded-xl text-xs font-mono border ${isDark ? 'bg-slate-800/40 border-slate-700 text-slate-400' : 'bg-white/60 backdrop-blur-md border-white/60 text-slate-600'}`}>
             Fields: <span className={isDark ? 'text-indigo-400' : 'text-indigo-600'}>
               {(JSON_TABS.find(t => t.id === jsonTab) as { desc: string })?.desc}
             </span>
@@ -477,12 +477,12 @@ const JsonEditor: React.FC = () => {
         )}
 
         {/* Panel */}
-        <div className={`rounded-2xl border p-5 mb-6 ${isDark ? 'bg-slate-800/40 border-slate-700' : 'bg-white border-slate-200'}`}>
+        <div className={`rounded-2xl border p-5 mb-6 ${isDark ? 'bg-slate-800/40 border-slate-700' : 'bg-white/70 backdrop-blur-md border-white/60 shadow-sm'}`}>
           {editorMode === 'form' ? formPanels[formTab] : jsonPanels[jsonTab]}
         </div>
 
         {/* Quick Export Actions */}
-        <div className={`flex flex-col sm:flex-row items-center justify-between p-4 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700' : 'bg-white border-slate-200 shadow-sm'}`}>
+        <div className={`flex flex-col sm:flex-row items-center justify-between p-4 rounded-xl border ${isDark ? 'bg-slate-800/60 border-slate-700' : 'bg-white/70 backdrop-blur-md border-white/60 shadow-sm'}`}>
           <div className={`flex items-center gap-2 mb-3 sm:mb-0 text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
             <Download size={16} /> Quick Export
           </div>

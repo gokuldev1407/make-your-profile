@@ -33,11 +33,10 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isDark
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isDark
           ? 'bg-slate-900/90 border-slate-700/60'
           : 'bg-[linear-gradient(to_right,#9df5f9f2,#c7dcfff2,#e4d4fff2,#ffccf0f2)] border-white/50 shadow-sm'
-      } border-b backdrop-blur-xl`}
+        } border-b backdrop-blur-xl`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -47,9 +46,8 @@ const Navbar: React.FC = () => {
               <span className="text-white font-bold text-sm">P</span>
             </div>
             <span
-              className={`font-bold text-lg tracking-tight ${
-                isDark ? 'text-white' : 'text-slate-900'
-              }`}
+              className={`font-bold text-lg tracking-tight ${isDark ? 'text-white' : 'text-slate-900'
+                }`}
             >
               Portfolio<span className="text-indigo-500">Builder</span>
             </span>
@@ -57,20 +55,18 @@ const Navbar: React.FC = () => {
 
           {/* Center: Mode Toggle */}
           <div
-            className={`flex rounded-xl p-1 gap-1 ${
-              isDark ? 'bg-slate-800' : 'bg-slate-100'
-            }`}
+            className={`flex rounded-xl p-1 gap-1 ${isDark ? 'bg-slate-800' : 'bg-slate-100'
+              }`}
           >
             <button
               id="mode-preview-btn"
               onClick={() => setMode('preview')}
-              className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                mode === 'preview'
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${mode === 'preview'
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
                   : isDark
-                  ? 'text-slate-400 hover:text-white'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+                    ? 'text-slate-400 hover:text-white'
+                    : 'text-slate-500 hover:text-slate-900'
+                }`}
             >
               <Eye size={14} />
               Preview
@@ -78,16 +74,15 @@ const Navbar: React.FC = () => {
             <button
               id="mode-edit-btn"
               onClick={() => setMode('edit')}
-              className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                mode === 'edit'
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${mode === 'edit'
                   ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30'
                   : isDark
-                  ? 'text-slate-400 hover:text-white'
-                  : 'text-slate-500 hover:text-slate-900'
-              }`}
+                    ? 'text-slate-400 hover:text-white'
+                    : 'text-slate-500 hover:text-slate-900'
+                }`}
             >
               <Code2 size={14} />
-              Edit JSON
+              Edit
             </button>
           </div>
 
@@ -97,11 +92,10 @@ const Navbar: React.FC = () => {
             <button
               id="theme-toggle-btn"
               onClick={toggleTheme}
-              className={`p-2 rounded-lg transition-all duration-200 ${
-                isDark
+              className={`p-2 rounded-lg transition-all duration-200 ${isDark
                   ? 'text-slate-400 hover:text-yellow-400 hover:bg-slate-800'
                   : 'text-slate-500 hover:text-indigo-600 hover:bg-slate-100'
-              }`}
+                }`}
               title="Toggle theme"
             >
               {isDark ? <Sun size={18} /> : <Moon size={18} />}
@@ -120,22 +114,20 @@ const Navbar: React.FC = () => {
 
               {exportMenuOpen && (
                 <div
-                  className={`absolute right-0 mt-2 w-52 rounded-xl shadow-2xl border overflow-hidden z-50 ${
-                    isDark
+                  className={`absolute right-0 mt-2 w-52 rounded-xl shadow-2xl border overflow-hidden z-50 ${isDark
                       ? 'bg-slate-800 border-slate-700'
                       : 'bg-white border-slate-200'
-                  }`}
+                    }`}
                 >
 
                   <button
                     id="export-docx-btn"
                     onClick={handleExportDocx}
                     disabled={exporting !== null}
-                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${
-                      isDark
+                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${isDark
                         ? 'text-slate-200 hover:bg-slate-700'
                         : 'text-slate-700 hover:bg-slate-50'
-                    } ${exporting !== null ? 'opacity-60 cursor-not-allowed' : ''}`}
+                      } ${exporting !== null ? 'opacity-60 cursor-not-allowed' : ''}`}
                   >
                     <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
                       <FileDown size={16} className="text-blue-500" />
@@ -154,11 +146,10 @@ const Navbar: React.FC = () => {
                     id="export-html-btn"
                     onClick={handleExportHtml}
                     disabled={exporting !== null}
-                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${
-                      isDark
+                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${isDark
                         ? 'text-slate-200 hover:bg-slate-700'
                         : 'text-slate-700 hover:bg-slate-50'
-                    } ${exporting !== null ? 'opacity-60 cursor-not-allowed' : ''}`}
+                      } ${exporting !== null ? 'opacity-60 cursor-not-allowed' : ''}`}
                   >
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
                       <Code2 size={16} className="text-emerald-500" />
