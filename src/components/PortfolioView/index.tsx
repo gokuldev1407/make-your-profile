@@ -15,7 +15,7 @@ const PortfolioView: React.FC = () => {
   return (
     <div 
       id="portfolio-view" 
-      className={`scroll-smooth ${
+      className={`scroll-smooth min-h-screen ${
         isDark 
           ? 'bg-slate-950 text-white' 
           : 'bg-[linear-gradient(to_right,#9df5f9,#c7dcff,#e4d4ff,#ffccf0)] text-slate-800'

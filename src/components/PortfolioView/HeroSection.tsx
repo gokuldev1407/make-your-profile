@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
           {personalInfo.name.split(' ').map((word, i) => (
             <span key={i}>
               {i === 1 ? (
-                <span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                <span className="gradient-text">
                   {' '}{word}
                 </span>
               ) : (

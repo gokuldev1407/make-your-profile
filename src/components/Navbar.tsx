@@ -1,39 +1,62 @@
 import React, { useState } from 'react';
-import { Eye, Code2, Sun, Moon, FileDown, Download } from 'lucide-react';
+import { Download, Eye, FileDown, Moon, Sun, Code2, LogOut, Loader2 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext';
-import { exportDocx } from '../utils/exportDocx';
+import { useAuth } from '../context/AuthContext';
 import { exportHtml } from '../utils/exportHtml';
+import { exportPdf } from '../utils/exportPdf';
+import { exportDocx } from '../utils/exportDocx';
 
 const Navbar: React.FC = () => {
   const { mode, setMode, theme, toggleTheme, data } = usePortfolio();
-  const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null);
+  const { logout, user } = useAuth();
+  const [exporting, setExporting] = useState<'pdf' | 'docx' | 'html' | null>(null);
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
-
-
-  const handleExportDocx = async () => {
-    setExporting('docx');
-    await exportDocx(data);
-    setExporting(null);
-    setExportMenuOpen(false);
-  };
-
   const isDark = theme === 'dark';
 
-  const handleExportHtml = () => {
-    if (mode === 'edit') {
-      setMode('preview');
-      setTimeout(() => {
-        exportHtml(data, isDark);
-      }, 400);
-    } else {
-      exportHtml(data, isDark);
-    }
+  const handleSelectExportType = async (type: 'resume-docx' | 'resume-pdf' | 'portfolio-html') => {
     setExportMenuOpen(false);
+
+    // Auto-switch to preview mode if currently in edit mode so DOM element exists
+    if ((type === 'resume-pdf' || type === 'portfolio-html') && mode !== 'preview') {
+      setMode('preview');
+      await new Promise(r => setTimeout(r, 250));
+    }
+
+    if (type === 'resume-docx') {
+      setExporting('docx');
+      await new Promise(r => setTimeout(r, 500)); // Ensure spinner is visible for at least 500ms
+      try {
+        await exportDocx(data);
+      } catch (e) {
+        console.error(e);
+        alert('Failed to export DOCX');
+      }
+      setExporting(null);
+    } else if (type === 'resume-pdf') {
+      setExporting('pdf');
+      try {
+        await exportPdf(data);
+      } catch (e) {
+        console.error(e);
+        alert('Failed to export PDF');
+      }
+      setExporting(null);
+    } else if (type === 'portfolio-html') {
+      setExporting('html');
+      await new Promise(r => setTimeout(r, 500)); // Give React time to render the spinner, making it visible to the user
+      try {
+        exportHtml(data, isDark);
+      } catch (e) {
+        console.error(e);
+        alert('Failed to export HTML');
+      }
+      setExporting(null);
+    }
   };
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isDark
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-b-3xl ${isDark
         ? 'bg-slate-900/90 border-slate-700/60'
         : 'bg-[linear-gradient(to_right,#9df5f9f2,#c7dcfff2,#e4d4fff2,#ffccf0f2)] border-white/50 shadow-sm'
         } border-b backdrop-blur-xl`}
@@ -121,11 +144,18 @@ const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 id="export-menu-btn"
-                onClick={() => setExportMenuOpen(o => !o)}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50"
+                onClick={() => !exporting && setExportMenuOpen(o => !o)}
+                disabled={exporting !== null}
+                className={`flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 ${exporting !== null ? 'opacity-80 cursor-wait' : ''}`}
               >
-                <Download size={15} />
-                <span className="hidden sm:inline">Export Resume</span>
+                {exporting !== null ? (
+                  <Loader2 size={15} className="animate-spin" />
+                ) : (
+                  <Download size={15} />
+                )}
+                <span className="hidden sm:inline">
+                  {exporting !== null ? 'Exporting...' : 'Export Resume'}
+                </span>
               </button>
 
               {exportMenuOpen && (
@@ -138,7 +168,7 @@ const Navbar: React.FC = () => {
 
                   <button
                     id="export-docx-btn"
-                    onClick={handleExportDocx}
+                    onClick={() => handleSelectExportType('resume-docx')}
                     disabled={exporting !== null}
                     className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${isDark
                       ? 'text-slate-200 hover:bg-slate-700'
@@ -159,8 +189,8 @@ const Navbar: React.FC = () => {
                   <div className={`h-px mx-4 ${isDark ? 'bg-slate-700' : 'bg-slate-100'}`} />
 
                   <button
-                    id="export-html-btn"
-                    onClick={handleExportHtml}
+                    id="export-pdf-btn"
+                    onClick={() => handleSelectExportType('resume-pdf')}
                     disabled={exporting !== null}
                     className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${isDark
                       ? 'text-slate-200 hover:bg-slate-700'
@@ -171,15 +201,52 @@ const Navbar: React.FC = () => {
                       <Code2 size={16} className="text-emerald-500" />
                     </div>
                     <div className="text-left">
-                      <div>Download HTML</div>
+                      <div>{exporting === 'pdf' ? 'Generating…' : 'Download PDF'}</div>
                       <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-                        Standalone web page
+                        Print-ready format
+                      </div>
+                    </div>
+                  </button>
+
+                  <div className={`h-px mx-4 ${isDark ? 'bg-slate-700' : 'bg-slate-100'}`} />
+
+                  <button
+                    id="export-html-btn"
+                    onClick={() => handleSelectExportType('portfolio-html')}
+                    disabled={exporting !== null}
+                    className={`flex items-center gap-3 w-full px-4 py-3 text-sm font-medium transition-colors duration-150 ${isDark
+                      ? 'text-slate-200 hover:bg-slate-700'
+                      : 'text-slate-700 hover:bg-slate-50'
+                      } ${exporting !== null ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                      <Code2 size={16} className="text-orange-500" />
+                    </div>
+                    <div className="text-left">
+                      <div>{exporting === 'html' ? 'Generating…' : 'Download HTML'}</div>
+                      <div className={`text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                        Standalone Web Page
                       </div>
                     </div>
                   </button>
                 </div>
               )}
             </div>
+
+            {/* Logout Button */}
+            {user && (
+              <button
+                onClick={logout}
+                className={`flex items-center gap-2 p-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${isDark
+                  ? 'text-red-400 hover:bg-slate-800 hover:text-red-300'
+                  : 'text-red-600 hover:bg-red-50 hover:text-red-700'
+                  }`}
+                title="Log out"
+              >
+                <LogOut size={16} />
+                <span className="hidden sm:inline">Logout</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
