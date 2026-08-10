@@ -65,37 +65,11 @@ export const exportHtml = (data: PortfolioData, isDark: boolean = false): void =
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="${data.personalInfo.title} portfolio">
   <title>${data.personalInfo.name} | ${data.personalInfo.title}</title>
+  <link rel="icon" href="
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"><\/script>
-  <script>
-    (function() {
-      const avatar = "${data.personalInfo.avatar || ''}";
-      if (!avatar) return;
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = 64;
-        canvas.height = 64;
-        const ctx = canvas.getContext("2d");
-        ctx.beginPath();
-        ctx.arc(32, 32, 32, 0, Math.PI * 2);
-        ctx.clip();
-        ctx.drawImage(img, 0, 0, 64, 64);
-        let link = document.querySelector("link[rel~='icon']");
-        if (!link) {
-          link = document.createElement("link");
-          link.rel = "icon";
-          document.head.appendChild(link);
-        }
-        link.type = "image/png";
-        link.href = canvas.toDataURL("image/png");
-      };
-      img.src = avatar;
-    })();
-  <\/script>
   <script>
     tailwind.config = {
       darkMode: 'class',
