@@ -77,14 +77,14 @@ const AiEditor: React.FC = () => {
     <div className={`flex flex-col lg:flex-row h-screen pt-20 pb-4 px-4 gap-4 ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       
       {/* ── Live Preview — bubble card ─────────────────────────── */}
-      <div className="bubble-card lg:w-2/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
+      <div className="hidden lg:block bubble-card lg:w-2/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
         <div className={`bubble-card-inner h-full overflow-y-auto shadow-2xl ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
           <PortfolioView />
         </div>
       </div>
 
       {/* ── Editor Sidebar — bubble card ──────────────────────── */}
-      <div className="bubble-card lg:w-1/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
+      <div className="bubble-card w-full lg:w-1/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
         <div className={`bubble-card-inner h-full flex flex-col ${
           isDark
             ? 'bg-slate-900'

@@ -53,7 +53,7 @@ const SkillsSection: React.FC = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-16">
           {stats.map(({ icon: Icon, label, value }) => (
             <div
               key={label}

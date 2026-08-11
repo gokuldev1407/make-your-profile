@@ -111,7 +111,7 @@ const FormEditor: React.FC = () => {
             <label className={labelClass}>Full Name</label>
             <input type="text" name="name" value={data.personalInfo.name} onChange={handlePersonalChange} className={inputClass} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Professional Title</label>
               <input type="text" name="title" value={data.personalInfo.title} onChange={handlePersonalChange} className={inputClass} />
@@ -121,7 +121,7 @@ const FormEditor: React.FC = () => {
               <input type="text" name="avatar" value={data.personalInfo.avatar || ''} onChange={handlePersonalChange} className={inputClass} placeholder="https://..." />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className={labelClass}>Email</label>
               <input type="email" name="email" value={data.personalInfo.email} onChange={handlePersonalChange} className={inputClass} />
@@ -203,7 +203,7 @@ const FormEditor: React.FC = () => {
                     <label className={labelClass}>Location</label>
                     <input type="text" value={exp.location} onChange={(e) => handleExpChange(exp.id, 'location', e.target.value)} className={inputClass} />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass}>Start Date</label>
                       <input type="text" placeholder="e.g. Jan 2020" value={exp.startDate} onChange={(e) => handleExpChange(exp.id, 'startDate', e.target.value)} className={inputClass} />
@@ -277,7 +277,7 @@ const FormEditor: React.FC = () => {
                     <label className={labelClass}>Location</label>
                     <input type="text" value={edu.location} onChange={(e) => handleEduChange(edu.id, 'location', e.target.value)} className={inputClass} />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass}>Start Date</label>
                       <input type="text" placeholder="e.g. 2018" value={edu.startDate} onChange={(e) => handleEduChange(edu.id, 'startDate', e.target.value)} className={inputClass} />
