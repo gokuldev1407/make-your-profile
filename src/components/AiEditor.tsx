@@ -76,20 +76,15 @@ const AiEditor: React.FC = () => {
   return (
     <div className={`flex flex-col lg:flex-row h-screen pt-20 pb-4 px-4 gap-4 ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       
-      {/* ── Live Preview — bubble card ─────────────────────────── */}
-      <div className="hidden lg:block bubble-card lg:w-2/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
-        <div className={`bubble-card-inner h-full overflow-y-auto shadow-2xl ${isDark ? 'bg-slate-900' : 'bg-white'}`}>
+      {/* ── Live Preview ─────────────────────────── */}
+      <div className={`hidden lg:block lg:w-2/3 h-full flex-shrink-0 border rounded-2xl overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`} style={{ minHeight: 0 }}>
+        <div className="h-full overflow-y-auto">
           <PortfolioView />
         </div>
       </div>
 
-      {/* ── Editor Sidebar — bubble card ──────────────────────── */}
-      <div className="bubble-card w-full lg:w-1/3 h-full flex-shrink-0" style={{ minHeight: 0 }}>
-        <div className={`bubble-card-inner h-full flex flex-col ${
-          isDark
-            ? 'bg-slate-900'
-            : 'bg-[linear-gradient(145deg,rgba(157,245,249,0.96),rgba(199,220,255,0.96),rgba(228,212,255,0.96),rgba(255,204,240,0.96))] backdrop-blur-xl'
-        }`}>
+      {/* ── Editor Sidebar ──────────────────────── */}
+      <div className={`w-full lg:w-1/3 h-full flex-shrink-0 flex flex-col border rounded-2xl overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`} style={{ minHeight: 0 }}>
 
           {/* Tabs */}
           <div className={`flex items-center border-b ${isDark ? 'border-slate-700/60' : 'border-white/40'}`}>
@@ -215,8 +210,6 @@ const AiEditor: React.FC = () => {
             <FormEditor />
           )}
         </div>
-      </div>
-
     </div>
   );
 };

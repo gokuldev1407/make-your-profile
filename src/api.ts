@@ -1,5 +1,8 @@
 import type { PortfolioData } from './types/portfolio';
 
+// Track the last time a real API call was made to prevent unnecessary keep-alive pings
+let lastApiCallTime = Date.now();
+
 // Dynamically check if the user is on localhost
 const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
@@ -17,6 +20,10 @@ const getHeaders = () => {
 };
 
 const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
+  // We ignore keep-alive pings so they don't reset the activity timer
+  if (!url.endsWith('/ping')) {
+    lastApiCallTime = Date.now();
+  }
   const res = await fetch(url, options);
   if (res.status === 401) {
     localStorage.removeItem('token');
@@ -100,6 +107,7 @@ export const api = {
 
   // --- Auth ---
   register: async (data: any) => {
+    lastApiCallTime = Date.now();
     const res = await fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -108,11 +116,22 @@ export const api = {
     return res.json();
   },
   login: async (data: any) => {
+    lastApiCallTime = Date.now();
     const res = await fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
     return res.json();
+  },
+  
+  // --- Keep Alive ---
+  getLastCallTime: () => lastApiCallTime,
+  ping: async () => {
+    try {
+      await fetchWithAuth(`${API_BASE}/ping`, { method: 'GET' });
+    } catch (e) {
+      // Silently ignore ping errors to prevent console spam
+    }
   }
 };
