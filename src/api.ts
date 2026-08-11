@@ -1,6 +1,12 @@
 import type { PortfolioData } from './types/portfolio';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+// Dynamically check if the user is on localhost
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+// If they are local, use localhost. If they are in production, use the environment variable.
+const API_BASE = isLocal 
+  ? 'http://localhost:8080/api/v1' 
+  : import.meta.env.VITE_API_BASE_URL;
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
