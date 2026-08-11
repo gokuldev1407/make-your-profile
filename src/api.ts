@@ -6,7 +6,7 @@ const isLocal = window.location.hostname === 'localhost' || window.location.host
 // If they are local, use localhost. If they are in production, use the environment variable.
 const API_BASE = isLocal 
   ? 'http://localhost:8080/api/v1' 
-  : import.meta.env.VITE_API_BASE_URL;
+  : `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
