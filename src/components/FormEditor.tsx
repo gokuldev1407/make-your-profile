@@ -35,6 +35,23 @@ const FormEditor: React.FC = () => {
     });
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateData({
+          ...data,
+          personalInfo: {
+            ...data.personalInfo,
+            avatar: reader.result as string
+          }
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   // --- Experience Handlers ---
   const handleExpChange = (id: string, field: keyof ExperienceItem, value: any) => {
     const newExp = data.experience.map(exp => 
@@ -117,8 +134,21 @@ const FormEditor: React.FC = () => {
               <input type="text" name="title" value={data.personalInfo.title} onChange={handlePersonalChange} className={inputClass} />
             </div>
             <div>
-              <label className={labelClass}>Avatar URL</label>
-              <input type="text" name="avatar" value={data.personalInfo.avatar || ''} onChange={handlePersonalChange} className={inputClass} placeholder="https://..." />
+              <label className={labelClass}>Profile Pic</label>
+              <div className="relative">
+                <input 
+                  type="text" 
+                  name="avatar" 
+                  value={data.personalInfo.avatar || ''} 
+                  onChange={handlePersonalChange} 
+                  className={`${inputClass} pr-24`} 
+                  placeholder="https://... or upload" 
+                />
+                <label className={`absolute right-1.5 top-1.5 bottom-1.5 cursor-pointer flex items-center justify-center px-3 rounded-lg transition-colors text-xs font-semibold ${isDark ? 'text-slate-300 hover:bg-slate-700/50 hover:text-white' : 'text-slate-500 hover:bg-slate-200/50 hover:text-slate-900'}`}>
+                  Upload
+                  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                </label>
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -164,7 +194,7 @@ const FormEditor: React.FC = () => {
       <section>
         <div className="flex items-center justify-between border-b pb-2 mb-4 border-slate-200 dark:border-slate-700">
           <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Experience</h3>
-          <button onClick={addExperience} className="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+          <button onClick={addExperience} className="cursor-pointer flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
             <Plus size={16} /> Add
           </button>
         </div>
@@ -182,7 +212,7 @@ const FormEditor: React.FC = () => {
                   <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{exp.role}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button onClick={(e) => { e.stopPropagation(); removeExperience(exp.id); }} className="text-red-500 hover:text-red-700 p-1">
+                  <button onClick={(e) => { e.stopPropagation(); removeExperience(exp.id); }} className="cursor-pointer text-red-500 hover:text-red-700 p-1">
                     <Trash2 size={16} />
                   </button>
                   {isExpanded ? <ChevronUp size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} /> : <ChevronDown size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} />}
@@ -234,7 +264,7 @@ const FormEditor: React.FC = () => {
       <section>
         <div className="flex items-center justify-between border-b pb-2 mb-4 border-slate-200 dark:border-slate-700">
           <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Education</h3>
-          <button onClick={addEducation} className="flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+          <button onClick={addEducation} className="cursor-pointer flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
             <Plus size={16} /> Add
           </button>
         </div>
@@ -252,7 +282,7 @@ const FormEditor: React.FC = () => {
                   <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{edu.degree}</div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button onClick={(e) => { e.stopPropagation(); removeEducation(edu.id); }} className="text-red-500 hover:text-red-700 p-1">
+                  <button onClick={(e) => { e.stopPropagation(); removeEducation(edu.id); }} className="cursor-pointer text-red-500 hover:text-red-700 p-1">
                     <Trash2 size={16} />
                   </button>
                   {isExpanded ? <ChevronUp size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} /> : <ChevronDown size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} />}

@@ -56,12 +56,12 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 rounded-b-3xl ${isDark
+      className={`fixed top-[7px] z-50 transition-all duration-300 rounded-2xl border backdrop-blur-xl ${isDark
         ? 'bg-slate-900/90 border-slate-700/60'
-        : 'bg-[linear-gradient(to_right,#9df5f9f2,#c7dcfff2,#e4d4fff2,#ffccf0f2)] border-white/50 shadow-sm'
-        } border-b backdrop-blur-xl`}
+        : 'bg-[linear-gradient(to_right,#9df5f9f2,#c7dcfff2,#e4d4fff2,#ffccf0f2)] border-white/50 shadow-md'
+        } left-2 right-2 mx-auto ${mode === 'preview' ? 'max-w-8xl' : ''}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
               </g>
             </svg>
             <span
-              className={`font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}
+              className={`hidden sm:block font-extrabold text-lg sm:text-xl md:text-2xl tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}
             >
               MakeYour<span className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent ml-[1px]">Profile</span>
             </span>
@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
                 }`}
             >
               <Eye size={14} />
-              <span className="hidden sm:inline">Preview</span>
+              <span className="hidden lg:inline">Preview</span>
             </button>
             <button
               id="mode-edit-btn"
@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
                 }`}
             >
               <Code2 size={14} />
-              <span className="hidden sm:inline">Edit</span>
+              <span className="hidden lg:inline">Edit</span>
             </button>
           </div>
 
@@ -153,7 +153,7 @@ const Navbar: React.FC = () => {
                 ) : (
                   <Download size={15} />
                 )}
-                <span className="hidden sm:inline">
+                <span className="hidden lg:inline">
                   {exporting !== null ? 'Exporting...' : 'Export Resume'}
                 </span>
               </button>
@@ -244,7 +244,7 @@ const Navbar: React.FC = () => {
                 title="Log out"
               >
                 <LogOut size={16} />
-                <span className="hidden sm:inline">Logout</span>
+                <span className="hidden lg:inline">Logout</span>
               </button>
             )}
           </div>

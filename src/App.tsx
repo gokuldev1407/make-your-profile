@@ -49,8 +49,8 @@ const AppInner: React.FC = () => {
         <Navbar />
         <main>
           {mode === 'preview' ? (
-            <div className="pt-20 px-4 pb-6">
-              <div className={`w-full max-w-8xl mx-auto rounded-2xl border overflow-hidden shadow-xl ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+            <div className="h-screen pt-20 px-2 pb-2">
+              <div className={`h-full w-full max-w-8xl mx-auto rounded-2xl border overflow-hidden shadow-xl overflow-y-auto ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
                 <PortfolioView />
               </div>
             </div>

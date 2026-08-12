@@ -21,7 +21,7 @@ const PortfolioContext = createContext<PortfolioContextType | undefined>(undefin
 export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<PortfolioData>(defaultPortfolioData);
   const [mode, setMode] = useState<AppMode>('preview');
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>('light');
   const [loading, setLoading] = useState(true);
   const [profileId, setProfileId] = useState<string | null>(null);
 
@@ -49,9 +49,9 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
         } else {
           // No profile exists, create one
           const newProfile = await api.createProfile({
-            title: "My Portfolio",
+            title: "Lyra's Quantum Portfolio",
             profileData: JSON.stringify(defaultPortfolioData),
-            themeConfig: JSON.stringify({ theme: 'dark' })
+            themeConfig: JSON.stringify({ theme: 'light' })
           });
           setProfileId(newProfile.data.id);
           setData(defaultPortfolioData);

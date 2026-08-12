@@ -18,7 +18,7 @@ const AiEditor: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'ai' | 'form'>('ai');
+  const [activeTab, setActiveTab] = useState<'ai' | 'form'>('form');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isDark = theme === 'dark';
 
@@ -74,7 +74,7 @@ const AiEditor: React.FC = () => {
   };
 
   return (
-    <div className={`flex flex-col lg:flex-row h-screen pt-20 pb-4 px-4 gap-4 ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`flex flex-col lg:flex-row h-screen pt-20 pb-2 px-2 gap-2 ${isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'}`}>
       
       {/* ── Live Preview ─────────────────────────── */}
       <div className={`hidden lg:block lg:w-2/3 h-full flex-shrink-0 border rounded-2xl overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`} style={{ minHeight: 0 }}>
@@ -84,7 +84,7 @@ const AiEditor: React.FC = () => {
       </div>
 
       {/* ── Editor Sidebar ──────────────────────── */}
-      <div className={`w-full lg:w-1/3 h-full flex-shrink-0 flex flex-col border rounded-2xl overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`} style={{ minHeight: 0 }}>
+      <div className={`w-full flex-1 h-full flex flex-col border rounded-2xl overflow-hidden shadow-sm ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-[linear-gradient(to_right,#e4d4ff,#ffccf0)] border-white/50'}`} style={{ minHeight: 0 }}>
 
           {/* Tabs */}
           <div className={`flex items-center border-b ${isDark ? 'border-slate-700/60' : 'border-white/40'}`}>
@@ -96,20 +96,6 @@ const AiEditor: React.FC = () => {
               title="Back to Preview"
             >
               <ArrowLeft size={18} />
-            </button>
-            <button
-              onClick={() => setActiveTab('ai')}
-              className={`flex-1 py-3 px-4 text-sm font-semibold flex items-center justify-center gap-2 relative transition-all duration-200 ${
-                activeTab === 'ai'
-                  ? isDark
-                    ? 'text-indigo-400 border-b-2 border-indigo-400'
-                    : 'bubble-tab-active border-b-2 border-transparent'
-                  : isDark
-                    ? 'text-slate-400 hover:text-slate-200 border-b-2 border-transparent'
-                    : 'text-slate-500 hover:text-slate-700 border-b-2 border-transparent'
-              }`}
-            >
-              <MessageSquare size={15} /> AI Chat
             </button>
             <button
               onClick={() => setActiveTab('form')}
@@ -124,6 +110,20 @@ const AiEditor: React.FC = () => {
               }`}
             >
               <FileText size={15} /> Manual Form
+            </button>
+            <button
+              onClick={() => setActiveTab('ai')}
+              className={`flex-1 py-3 px-4 text-sm font-semibold flex items-center justify-center gap-2 relative transition-all duration-200 ${
+                activeTab === 'ai'
+                  ? isDark
+                    ? 'text-indigo-400 border-b-2 border-indigo-400'
+                    : 'bubble-tab-active border-b-2 border-transparent'
+                  : isDark
+                    ? 'text-slate-400 hover:text-slate-200 border-b-2 border-transparent'
+                    : 'text-slate-500 hover:text-slate-700 border-b-2 border-transparent'
+              }`}
+            >
+              <MessageSquare size={15} /> AI Chat
             </button>
           </div>
 
