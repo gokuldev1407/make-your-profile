@@ -1,7 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePortfolio } from '../context/PortfolioContext';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import type { ExperienceItem, EducationItem } from '../types/portfolio';
+
+const StringArrayInput = ({ 
+  value, 
+  onChange, 
+  separator, 
+  placeholder, 
+  rows, 
+  className 
+}: { 
+  value: string[]; 
+  onChange: (val: string[]) => void; 
+  separator: string; 
+  placeholder?: string; 
+  rows?: number; 
+  className?: string;
+}) => {
+  const [localValue, setLocalValue] = useState(() => value.join(separator === ',' ? ', ' : separator));
+
+  useEffect(() => {
+    const currentSanitized = localValue.split(separator).map(s => s.trim()).filter(Boolean).join(separator);
+    const propSanitized = value.map(s => s.trim()).filter(Boolean).join(separator);
+    if (currentSanitized !== propSanitized) {
+      setLocalValue(value.join(separator === ',' ? ', ' : separator));
+    }
+  }, [value, separator, localValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setLocalValue(e.target.value);
+    onChange(e.target.value.split(separator).map(s => s.trim()).filter(Boolean));
+  };
+
+  return (
+    <textarea
+      value={localValue}
+      onChange={handleChange}
+      placeholder={placeholder}
+      rows={rows}
+      className={className}
+    />
+  );
+};
 
 const FormEditor: React.FC = () => {
   const { data, updateData, theme } = usePortfolio();
@@ -110,14 +151,12 @@ const FormEditor: React.FC = () => {
 
   // --- Skills Handlers ---
   const handleSkillCategoryChange = (index: number, value: string) => {
-    const newSkills = [...data.skills];
-    newSkills[index].category = value;
+    const newSkills = data.skills.map((skill, i) => i === index ? { ...skill, category: value } : skill);
     updateData({ ...data, skills: newSkills });
   };
 
-  const handleSkillItemsChange = (index: number, value: string) => {
-    const newSkills = [...data.skills];
-    newSkills[index].items = value.split(',').map(item => item.trim()).filter(Boolean);
+  const handleSkillItemsChange = (index: number, items: string[]) => {
+    const newSkills = data.skills.map((skill, i) => i === index ? { ...skill, items } : skill);
     updateData({ ...data, skills: newSkills });
   };
 
@@ -270,9 +309,10 @@ const FormEditor: React.FC = () => {
                   </div>
                   <div>
                     <label className={labelClass}>Achievements (one per line)</label>
-                    <textarea 
-                      value={exp.achievements?.join('\n') || ''} 
-                      onChange={(e) => handleExpChange(exp.id, 'achievements', e.target.value.split('\n').filter(Boolean))} 
+                    <StringArrayInput 
+                      value={exp.achievements || []} 
+                      onChange={(newAchievements) => handleExpChange(exp.id, 'achievements', newAchievements)} 
+                      separator={'\n'}
                       rows={4} 
                       className={inputClass} 
                       placeholder="- Developed feature X..."
@@ -390,9 +430,10 @@ const FormEditor: React.FC = () => {
                   </div>
                   <div>
                     <label className={labelClass}>Skills (comma separated)</label>
-                    <textarea 
-                      value={skillGroup.items.join(', ')} 
-                      onChange={(e) => handleSkillItemsChange(index, e.target.value)} 
+                    <StringArrayInput 
+                      value={skillGroup.items || []} 
+                      onChange={(newItems) => handleSkillItemsChange(index, newItems)} 
+                      separator=","
                       rows={3} 
                       className={inputClass} 
                       placeholder="React, TypeScript, Node.js..."
