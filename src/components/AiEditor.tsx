@@ -14,7 +14,7 @@ interface Message {
 const AiEditor: React.FC = () => {
   const { data, saveData, theme, setMode } = usePortfolio();
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', role: 'assistant', content: "Hi! I'm your AI Portfolio Assistant. Tell me what you'd like to change about your resume or portfolio. For example: 'Add React to my skills', 'Rewrite my bio to sound more professional', or 'Add a new project about an e-commerce store'." }
+    { id: '1', role: 'assistant', content: "Hi! I'm your AI Portfolio Assistant. Tell me what you'd like to change, or paste a Job Description and I will automatically rewrite your resume and portfolio to be ATS-friendly and perfectly tailored to the role!" }
   ]);
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
