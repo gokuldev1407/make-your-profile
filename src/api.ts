@@ -76,8 +76,16 @@ export const api = {
     const response = await res.json();
     
     try {
-      // The AI might return the JSON wrapped in a string or directly.
-      const jsonStr = response.data.generatedText;
+      // The AI might return the JSON wrapped in a markdown code block or with extra conversational text.
+      let jsonStr = response.data.generatedText;
+      
+      // Extract just the JSON object if there is conversational text or markdown around it
+      const firstBrace = jsonStr.indexOf('{');
+      const lastBrace = jsonStr.lastIndexOf('}');
+      if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+        jsonStr = jsonStr.substring(firstBrace, lastBrace + 1);
+      }
+      
       return JSON.parse(jsonStr) as PortfolioData;
     } catch (e) {
       console.error("AI did not return valid JSON:", response.data.generatedText);
@@ -106,6 +114,15 @@ export const api = {
   },
 
   // --- Auth ---
+  googleLogin: async (idToken: string) => {
+    lastApiCallTime = Date.now();
+    const res = await fetch(`${API_BASE}/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken })
+    });
+    return res.json();
+  },
   register: async (data: any) => {
     lastApiCallTime = Date.now();
     const res = await fetch(`${API_BASE}/auth/register`, {

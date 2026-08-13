@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../api';
 import { Loader2, ArrowRight } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 const AuthScreen: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -40,6 +41,23 @@ const AuthScreen: React.FC = () => {
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse: any) => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await api.googleLogin(credentialResponse.credential);
+      if (res.success) {
+        login({ id: res.data.id, email: res.data.email, name: res.data.name }, res.data.token);
+      } else {
+        setError(res.message || 'Google Login failed');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Google authentication failed');
     } finally {
       setLoading(false);
     }
@@ -154,6 +172,28 @@ const AuthScreen: React.FC = () => {
               )}
             </button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white/60 text-slate-500">Or continue with</span>
+              </div>
+            </div>
+            
+            <div className="mt-6 flex justify-center">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => setError('Google Login Failed')}
+                theme="outline"
+                size="large"
+                text="continue_with"
+                width="100%"
+              />
+            </div>
+          </div>
 
           <div className="mt-8 text-center">
             <p className="text-sm text-slate-500">

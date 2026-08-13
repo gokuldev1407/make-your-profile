@@ -9,6 +9,7 @@ const FormEditor: React.FC = () => {
 
   const [expandedExp, setExpandedExp] = useState<string | null>(null);
   const [expandedEdu, setExpandedEdu] = useState<string | null>(null);
+  const [expandedSkill, setExpandedSkill] = useState<number | null>(null);
 
   const handlePersonalChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -105,6 +106,30 @@ const FormEditor: React.FC = () => {
 
   const removeEducation = (id: string) => {
     updateData({ ...data, education: data.education.filter(edu => edu.id !== id) });
+  };
+
+  // --- Skills Handlers ---
+  const handleSkillCategoryChange = (index: number, value: string) => {
+    const newSkills = [...data.skills];
+    newSkills[index].category = value;
+    updateData({ ...data, skills: newSkills });
+  };
+
+  const handleSkillItemsChange = (index: number, value: string) => {
+    const newSkills = [...data.skills];
+    newSkills[index].items = value.split(',').map(item => item.trim()).filter(Boolean);
+    updateData({ ...data, skills: newSkills });
+  };
+
+  const addSkillCategory = () => {
+    const newSkills = [...data.skills, { category: 'New Category', items: [] }];
+    updateData({ ...data, skills: newSkills });
+    setExpandedSkill(newSkills.length - 1);
+  };
+
+  const removeSkillCategory = (index: number) => {
+    const newSkills = data.skills.filter((_, i) => i !== index);
+    updateData({ ...data, skills: newSkills });
   };
 
   const inputClass = `w-full px-4 py-2.5 rounded-xl border focus:ring-4 focus:outline-none transition-all duration-200 shadow-sm ${
@@ -236,11 +261,11 @@ const FormEditor: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass}>Start Date</label>
-                      <input type="text" placeholder="e.g. Jan 2020" value={exp.startDate} onChange={(e) => handleExpChange(exp.id, 'startDate', e.target.value)} className={inputClass} />
+                      <input type="date" value={exp.startDate} onChange={(e) => handleExpChange(exp.id, 'startDate', e.target.value)} className={inputClass} />
                     </div>
                     <div>
                       <label className={labelClass}>End Date</label>
-                      <input type="text" placeholder="e.g. Present" value={exp.endDate} onChange={(e) => handleExpChange(exp.id, 'endDate', e.target.value)} className={inputClass} />
+                      <input type="date" value={exp.endDate} onChange={(e) => handleExpChange(exp.id, 'endDate', e.target.value)} className={inputClass} />
                     </div>
                   </div>
                   <div>
@@ -310,11 +335,11 @@ const FormEditor: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className={labelClass}>Start Date</label>
-                      <input type="text" placeholder="e.g. 2018" value={edu.startDate} onChange={(e) => handleEduChange(edu.id, 'startDate', e.target.value)} className={inputClass} />
+                      <input type="date" value={edu.startDate} onChange={(e) => handleEduChange(edu.id, 'startDate', e.target.value)} className={inputClass} />
                     </div>
                     <div>
                       <label className={labelClass}>End Date</label>
-                      <input type="text" placeholder="e.g. 2022" value={edu.endDate} onChange={(e) => handleEduChange(edu.id, 'endDate', e.target.value)} className={inputClass} />
+                      <input type="date" value={edu.endDate} onChange={(e) => handleEduChange(edu.id, 'endDate', e.target.value)} className={inputClass} />
                     </div>
                   </div>
                   <div>
@@ -328,6 +353,58 @@ const FormEditor: React.FC = () => {
         })}
       </section>
       
+      {/* SKILLS */}
+      <section>
+        <div className="flex items-center justify-between border-b pb-2 mb-4 border-slate-200 dark:border-slate-700">
+          <h3 className={`text-lg font-semibold ${isDark ? 'text-white' : 'text-slate-900'}`}>Skills & Technologies</h3>
+          <button onClick={addSkillCategory} className="cursor-pointer flex items-center gap-1 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+            <Plus size={16} /> Add
+          </button>
+        </div>
+        
+        {data.skills.map((skillGroup, index) => {
+          const isExpanded = expandedSkill === index;
+          return (
+            <div key={index} className={cardClass}>
+              <div 
+                className={`flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors ${isExpanded ? 'border-b border-slate-200 dark:border-slate-700' : ''}`}
+                onClick={() => setExpandedSkill(isExpanded ? null : index)}
+              >
+                <div>
+                  <div className={`font-medium ${isDark ? 'text-white' : 'text-slate-900'}`}>{skillGroup.category || 'New Category'}</div>
+                  <div className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{skillGroup.items.length} skills</div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button onClick={(e) => { e.stopPropagation(); removeSkillCategory(index); }} className="cursor-pointer text-red-500 hover:text-red-700 p-1">
+                    <Trash2 size={16} />
+                  </button>
+                  {isExpanded ? <ChevronUp size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} /> : <ChevronDown size={20} className={isDark ? 'text-slate-400' : 'text-slate-500'} />}
+                </div>
+              </div>
+              
+              {isExpanded && (
+                <div className="p-4 space-y-4">
+                  <div>
+                    <label className={labelClass}>Category Name</label>
+                    <input type="text" value={skillGroup.category} onChange={(e) => handleSkillCategoryChange(index, e.target.value)} className={inputClass} placeholder="e.g. Frontend, Backend, Languages" />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Skills (comma separated)</label>
+                    <textarea 
+                      value={skillGroup.items.join(', ')} 
+                      onChange={(e) => handleSkillItemsChange(index, e.target.value)} 
+                      rows={3} 
+                      className={inputClass} 
+                      placeholder="React, TypeScript, Node.js..."
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </section>
+
     </div>
   );
 };
