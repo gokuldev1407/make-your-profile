@@ -189,7 +189,7 @@ const AuthScreen: React.FC = () => {
                 onError={() => setError('Google Login Failed')}
                 theme="outline"
                 size="large"
-                text="continue_with"
+                text="signin_with"
                 width="100%"
               />
             </div>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { googleLogout } from '@react-oauth/google';
 
 export interface User {
   id: string;
@@ -35,6 +36,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setToken(null);
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    googleLogout();
   };
 
   useEffect(() => {
