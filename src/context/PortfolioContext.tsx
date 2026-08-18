@@ -30,14 +30,22 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!isAuthenticated || !user) {
+        const savedDraft = localStorage.getItem('portfolioDraft');
+        if (savedDraft) {
+          try {
+            setData(JSON.parse(savedDraft));
+          } catch (e) {
+            console.error("Failed to parse local draft", e);
+          }
+        }
         setLoading(false);
         return;
       }
       
       try {
-        const res = await api.getProfiles();
-        if (res.data && res.data.length > 0) {
-          const profile = res.data[0];
+        const res = await api.getProfile();
+        if (res.data) {
+          const profile = res.data;
           setProfileId(profile.id);
           if (profile.profileData) {
             setData(JSON.parse(profile.profileData));
@@ -67,10 +75,31 @@ export const PortfolioProvider: React.FC<{ children: ReactNode }> = ({ children 
     fetchProfile();
   }, [user, isAuthenticated]);
 
+  // Auto-save effect for debounced API updates and local storage drafts
+  useEffect(() => {
+    if (loading) return; // Prevent overwriting during initial load
+    
+    // Always save latest state to local draft
+    localStorage.setItem('portfolioDraft', JSON.stringify(data));
+    
+    // Auto-sync with backend if authenticated
+    if (isAuthenticated && profileId) {
+      const handler = setTimeout(() => {
+        api.updateProfile(profileId, {
+          profileData: JSON.stringify(data),
+          themeConfig: JSON.stringify({ theme })
+        }).catch(err => console.error("Auto-save failed", err));
+      }, 1000);
+      
+      return () => clearTimeout(handler);
+    }
+  }, [data, theme, isAuthenticated, profileId, loading]);
+
   const updateData = (newData: PortfolioData) => setData(newData);
   
   const saveData = async (newData: PortfolioData) => {
     setData(newData);
+    localStorage.setItem('portfolioDraft', JSON.stringify(newData));
     if (profileId) {
       await api.updateProfile(profileId, {
         profileData: JSON.stringify(newData),

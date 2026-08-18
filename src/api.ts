@@ -36,11 +36,11 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
 
 export const api = {
   // --- Profiles ---
-  getProfiles: async () => {
-    const res = await fetchWithAuth(`${API_BASE}/profiles/my-profiles`, {
+  getProfile: async () => {
+    const res = await fetchWithAuth(`${API_BASE}/profiles/my-profile`, {
       headers: getHeaders()
     });
-    if (!res.ok) throw new Error('Failed to fetch profiles');
+    if (!res.ok) throw new Error('Failed to fetch profile');
     return res.json();
   },
   createProfile: async (data: { title: string; profileData: string; themeConfig: string }) => {
